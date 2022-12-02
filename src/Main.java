@@ -23,6 +23,7 @@ public class Main {
 
         // printing all users list
         System.out.println(usersData);
+        System.out.println("You press any key or exit! See you next time!");
     }
 
     /**
@@ -44,10 +45,15 @@ public class Main {
                 case 1:
                     user = new User();
                     user.addUser();
-                    usersData.put(user.getId(), user);
-                    usersDataNick.put(user.getUsername(), user.getPassword());
-                    System.out.println(user.getFirstName() + "! You are registered!");
-                    break;
+                    if (!usersDataNick.containsKey(user.getUsername())) {
+                        usersData.put(user.getId(), user);
+                        usersDataNick.put(user.getUsername(), user.getPassword());
+                        System.out.println(user.getFirstName() + "! You are registered!");
+                        break;
+                    } else {
+                        System.out.println("User is already exist! Try once more!");
+                        break;
+                    }
                 case 2:
                     try {
                         loginUser(usersDataNick);
@@ -69,6 +75,9 @@ public class Main {
                     }
                 case 4:
                     System.exit(0);
+                case 5:
+                    System.out.println("Incorrect choice! Good luck next time you run the program");
+                    System.exit(0);
             }
             System.out.println("Make your choice! If you want to register new user press 1 " +
                     "\n If you want to login - press 2 " +
@@ -77,6 +86,12 @@ public class Main {
         }
     }
 
+    /**
+     * The method is used for user login
+     *
+     * @param usersDataNick - database where the key is username
+     * @throws UserNameOrPasswIsWrong - exeption
+     */
     private static void loginUser(Map<String, String> usersDataNick) throws UserNameOrPasswIsWrong {
         System.out.println("Input your nickname: ");
         Scanner sc = new Scanner(System.in);
@@ -95,6 +110,13 @@ public class Main {
 
     }
 
+    /**
+     * The method allows to find user by id
+     *
+     * @param usersData -  database where the key is user id
+     * @param k         - is value from user input
+     * @throws UserIsNotFoundException - the exception
+     */
     private static void findUserById(Map<String, User> usersData, String k) throws UserIsNotFoundException {
         if ((!usersData.isEmpty()) && (usersData.containsKey(k))) {
             System.out.println("Find user for id! The user is: " + usersData.get(k).getFirstName());
